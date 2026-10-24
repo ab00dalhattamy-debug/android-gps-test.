@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مفاجأة لك 😂</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg,#14152e,#34315c);
+      color: white;
+      font-family: Tahoma, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .card {
+      background: #ffffff12;
+      border: 1px solid #ffffff30;
+      border-radius: 24px;
+      padding: 30px 22px;
+      margin: 18px;
+      max-width: 420px;
+    }
+    h1 { font-size: 27px; }
+    p { line-height: 1.9; }
+    button {
+      padding: 15px 25px;
+      border: 0;
+      border-radius: 14px;
+      background: #ffd166;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result { margin-top: 22px; }
+    a { color: #ffd166; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>😂 عندنا لك مفاجأة!</h1>
+    <p>جاهز تعرف أين أنت على الخريطة؟</p>
+    <p>
+      عند الضغط على الزر، سيطلب المتصفح
+      إذنك لتحديد موقعك الجغرافي.
+      موقعك لن يُرسل إلى أي شخص في هذه النسخة.
+    </p>
+    <button onclick="getLocation()">
+      📍 اعرض موقعي
+    </button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function getLocation() {
+      const result = document.getElementById("result");
+
+      if (!navigator.geolocation) {
+        result.textContent = "متصفحك لا يدعم تحديد الموقع";
+        return;
+      }
+
+      result.textContent = "جارٍ طلب إذن الموقع...";
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const url = "https://www.google.com/maps?q="
+                    + lat + "," + lon;
+
+          result.innerHTML = "";
+
+          const message = document.createElement("p");
+          message.textContent = "😂 لقيناك على الخريطة!";
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "📍 شاهد موقعك على Google Maps";
+
+          result.append(message, link);
+        },
+        function(error) {
+          result.textContent =
+            "تعذر تحديد الموقع. تأكد من السماح بالوصول إليه.";
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000
+        }
+      );
+    }
+  </script>
+</body>
+</html>
